@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "553835538559",
+    "project_id": "garbage-truck-f18ca",
+    "storage_bucket": "garbage-truck-f18ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:553835538559:android:4e9e06927a0a2a41ccf74a",
+        "android_client_info": {
+          "package_name": "com.example.garbage_truck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "553835538559-f8rnp5ib02dtjcj15k5jqta4keu8nbap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWkh-UF1-1XCF6mrjywQVVIyvDDN3q-qg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "553835538559-f8rnp5ib02dtjcj15k5jqta4keu8nbap.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
