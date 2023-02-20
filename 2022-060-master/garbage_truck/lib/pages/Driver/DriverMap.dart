@@ -14,30 +14,35 @@ import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import '../../api/routeApi.dart';
 import '../../dialogs/custom_dialog_box.dart';
-import '../Admin/Routes/ViewRoutesByBin.dart';
 
-class CalculateRouteMap extends StatefulWidget {
+class WorkingMap extends StatefulWidget {
   @override
   final id;
 
+  // final binLat;
+  // final binLng;
 
+  final sourceLat;
+  final sourceLng;
 
   final destinationLat;
   final destinationLng;
 
-  CalculateRouteMap({
+  WorkingMap({
     this.id,
-
+    this.sourceLat,
+    this.sourceLng,
     this.destinationLat,
     this.destinationLng,
-
+    // this.binLat,
+    // this.binLng,
   });
 
   @override
-  _CalculateRouteMapState createState() => _CalculateRouteMapState();
+  _WorkingMapState createState() => _WorkingMapState();
 }
 
-class _CalculateRouteMapState extends State<CalculateRouteMap> {
+class _WorkingMapState extends State<WorkingMap> {
   late Database db;
   List docs = [];
 
@@ -50,12 +55,8 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
 
   final Completer<GoogleMapController> _controller = Completer();
 
-
-
-
-  static LatLng sourceLocation = LatLng(6.9076384, 79.8949571);
+  static LatLng sourceLocation = LatLng(0, 0);
   static LatLng destination = LatLng(0, 0);
-
   static LatLng borella = LatLng(6.9177852, 79.89129199999999);
 
   static LatLng prudentialShipping = LatLng(6.9107964, 79.8904033);
@@ -76,7 +77,7 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
     Location location = Location();
 
     location.getLocation().then(
-          (location) {
+      (location) {
         currentLocation = location;
       },
     );
@@ -111,7 +112,7 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
 
     if (result.points.isNotEmpty) {
       result.points.forEach(
-            (PointLatLng point) => polylineCoordinates.add(
+        (PointLatLng point) => polylineCoordinates.add(
           LatLng(point.latitude, point.longitude),
         ),
       );
@@ -121,31 +122,31 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
 
   void setCustomMarkerIcon() {
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, "assets/images/bin.png")
+            ImageConfiguration.empty, "assets/images/bin.png")
         .then((icon) {
       currentLocationIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, "assets/images/bin.png")
+            ImageConfiguration.empty, "assets/images/bin.png")
         .then((icon) {
       prudentialShippingIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, "assets/images/bin.png")
+            ImageConfiguration.empty, "assets/images/bin.png")
         .then((icon) {
       parakumburaVidyalayaIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, "assets/images/truck.png")
+            ImageConfiguration.empty, "assets/images/truck.png")
         .then((icon) {
       sourceIcon = icon;
     });
 
     BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, "assets/images/bin.png")
+            ImageConfiguration.empty, "assets/images/bin.png")
         .then((icon) {
       destinationIcon = icon;
     });
@@ -155,11 +156,8 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
     db = Database();
     db.initiliase();
 
-    //munciple council
-    // destination = LatLng(6.9076384,79.8949571);
-    // destination = LatLng(widget.destinationLat,widget.destinationLng);
     destination = LatLng(widget.destinationLat, widget.destinationLng);
-
+    sourceLocation = LatLng(widget.sourceLat, widget.sourceLng);
 
     setCustomMarkerIcon();
     getCurrentLocation();
@@ -213,7 +211,7 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
             ),
             Marker(
               markerId: MarkerId("destination"),
-              icon:destinationIcon,
+              icon: destinationIcon,
               position: destination,
             )
           },
@@ -231,15 +229,17 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
                   builder: (BuildContext context) {
                     return const CustomDialogBox(
                       title: ("Route !"),
-                      descriptions: "Route Asign to the driver",
+                      descriptions: "Route Finished",
                       text: "ok",
                     );
                   }).whenComplete(() => Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => AdminViewRoute(
-
-                      ))));
+                      builder: (context) => DriverViewRoute(
+                            id: widget.id,
+                            routeAssign: "no",
+                            email: "",
+                          ))));
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 750.0),
@@ -262,7 +262,7 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
                       Colors.green.shade200,
                       Colors.green.shade900
                     ])),
-                child: Text('Assign Driver ',
+                child: Text('Finished Trip ',
                     style: TextStyle(
                         color: Colors.white.withOpacity(.8),
                         fontSize: 15,

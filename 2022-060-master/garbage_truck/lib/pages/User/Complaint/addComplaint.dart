@@ -1,16 +1,12 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-import '../../api/complaintApi.dart';
-import '../../dialogs/custom_dialog_box.dart';
-import '../homePage.dart';
-import '../signIn.dart';
-import '../signUp.dart';
+import '../../../api/complaintApi.dart';
+import '../../../dialogs/custom_dialog_box.dart';
+
+import '../../testfile.dart';
+import '../userHome.dart';
+import '../userNavigationDrawer.dart';
 
 class AddComplaint extends StatefulWidget {
   @override
@@ -48,11 +44,12 @@ class _AddComplaintpageState extends State<AddComplaint> {
 
     return SafeArea(
       child: Scaffold(
+        drawer: UserNavigationDrawerWidget(),
         appBar: AppBar(
-          // foregroundColor: Colors.black
-          backgroundColor: Colors.green.shade300,
-          shadowColor: Colors.green,
-          title: const Text('Complaints '),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+
+          title: const Text(' '),
           actions: const [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -63,13 +60,10 @@ class _AddComplaintpageState extends State<AddComplaint> {
           height: double.infinity,
           width: double.infinity,
           alignment: Alignment.center,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.green.shade200, Colors.green.shade900])),
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 Container(
@@ -80,7 +74,7 @@ class _AddComplaintpageState extends State<AddComplaint> {
                         Colors.green.shade200,
                         Colors.green.shade900
                       ]),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             blurRadius: 4,
                             spreadRadius: 3,
@@ -96,7 +90,7 @@ class _AddComplaintpageState extends State<AddComplaint> {
                           Colors.green.shade200,
                           Colors.green.shade900
                         ]),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               blurRadius: 4,
                               spreadRadius: 3,
@@ -107,9 +101,9 @@ class _AddComplaintpageState extends State<AddComplaint> {
                             topLeft: Radius.circular(0))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Text(
-                          'Let\'s',
+                          'Add',
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -122,11 +116,11 @@ class _AddComplaintpageState extends State<AddComplaint> {
                               ]),
                         ),
                         Text(
-                          ' Complain',
+                          ' Complaint',
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green.shade600,
+                              color: Colors.white,
                               shadows: [
                                 Shadow(
                                     color: Colors.black45,
@@ -138,7 +132,7 @@ class _AddComplaintpageState extends State<AddComplaint> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 40,
                 ),
                 Padding(
@@ -147,28 +141,21 @@ class _AddComplaintpageState extends State<AddComplaint> {
                   child: TextField(
                     controller: _lorryNumberTextController,
                     focusNode: lorryNumberFocus,
-                    style: TextStyle(color: Colors.white, fontSize: 14.5),
-                    decoration: InputDecoration(
+                    style: TextStyle(color: Colors.grey, fontSize: 14.5),
+                    decoration: const InputDecoration(
                         prefixIconConstraints: BoxConstraints(minWidth: 45),
                         prefixIcon: Icon(
                           Icons.add_outlined,
-                          color: Colors.white70,
+                          color: Colors.grey,
                           size: 22,
                         ),
                         border: InputBorder.none,
                         hintText: 'Lorry Number',
-                        hintStyle:
-                            TextStyle(color: Colors.white60, fontSize: 14.5),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white38)),
+                            borderSide: BorderSide(color: Colors.grey)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white70))),
+                            borderSide: BorderSide(color: Colors.black))),
                   ),
                 ),
                 Padding(
@@ -177,28 +164,21 @@ class _AddComplaintpageState extends State<AddComplaint> {
                   child: TextField(
                     controller: _emailTextController,
                     focusNode: emailFocus,
-                    style: TextStyle(color: Colors.white, fontSize: 14.5),
-                    decoration: InputDecoration(
+                    style: TextStyle(color: Colors.grey, fontSize: 14.5),
+                    decoration: const InputDecoration(
                         prefixIconConstraints: BoxConstraints(minWidth: 45),
                         prefixIcon: Icon(
                           Icons.email,
-                          color: Colors.white70,
+                          color: Colors.grey,
                           size: 22,
                         ),
                         border: InputBorder.none,
                         hintText: 'Email',
-                        hintStyle:
-                            TextStyle(color: Colors.white60, fontSize: 14.5),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white38)),
+                            borderSide: BorderSide(color: Colors.grey)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white70))),
+                            borderSide: BorderSide(color: Colors.black))),
                   ),
                 ),
                 Padding(
@@ -208,26 +188,19 @@ class _AddComplaintpageState extends State<AddComplaint> {
                     controller: _descriptionController,
                     focusNode: descriptionFocus,
                     maxLines: 6,
-                    style: TextStyle(color: Colors.white, fontSize: 14.5),
-                    decoration: InputDecoration(
+                    style: TextStyle(color: Colors.grey, fontSize: 14.5),
+                    decoration: const InputDecoration(
                         prefixIconConstraints: BoxConstraints(minWidth: 45),
                         border: InputBorder.none,
                         hintText: 'Description',
-                        hintStyle:
-                            TextStyle(color: Colors.white60, fontSize: 14.5),
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white38)),
+                            borderSide: BorderSide(color: Colors.grey)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white70))),
+                            borderSide: BorderSide(color: Colors.black))),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(
@@ -280,8 +253,7 @@ class _AddComplaintpageState extends State<AddComplaint> {
                           builder: (BuildContext context) {
                             return const CustomDialogBox(
                               title: ("Complaint !"),
-                              descriptions:
-                                  "Complaint Sent Successfully!",
+                              descriptions: "Complaint Sent Successfully!",
                               text: "ok",
                             );
                           }).whenComplete(() => Navigator.push(
@@ -304,29 +276,25 @@ class _AddComplaintpageState extends State<AddComplaint> {
                               color: Colors.black12.withOpacity(.2),
                               offset: Offset(2, 2))
                         ],
-                        borderRadius: BorderRadius.circular(30).copyWith(
+                        borderRadius: BorderRadius.circular(0).copyWith(
                             bottomRight: Radius.circular(0),
                             topLeft: Radius.circular(0)),
                         gradient: LinearGradient(colors: [
                           Colors.green.shade200,
                           Colors.green.shade900
                         ])),
-                    child: Text('Add Complaint',
+                    child: Text('Submit',
                         style: TextStyle(
                             color: Colors.white.withOpacity(.8),
-                            fontSize: 15,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold)),
                   ),
                 ),
+
                 const SizedBox(
-                  height: 10,
+                  height:50,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                SizedBox(
-                  height: 20,
-                )
+
               ],
             ),
           ),

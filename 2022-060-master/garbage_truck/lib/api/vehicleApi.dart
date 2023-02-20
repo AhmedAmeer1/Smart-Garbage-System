@@ -8,27 +8,29 @@ class Database {
     firestore = FirebaseFirestore.instance;
   }
 
-  Future<void> createComplaint(
-      String name, String email, String description) async {
+  Future<void> createVehicle(
+      String vehicleNumber, String name, String type) async {
     try {
-      await firestore.collection("Complaints").add({
-        'LorryNumber': name,
-        'email': email,
-        'description': description,
+      await firestore.collection("Vehicle").add({
+        'vehicleNumber': vehicleNumber,
+        'vehicleName': name,
+        'vehicleType': type,
         'timestamp': FieldValue.serverTimestamp()
       });
-      print("debug : New Flower Added");
+      print("debug : New Vehicle Added");
     } catch (e) {
       print(e);
     }
   }
 
-  Future<List> readComplaintDetails() async {
+
+
+  Future<List> readVehicleDetails() async {
     QuerySnapshot querySnapshot;
     List docs = [];
     try {
       querySnapshot = await firestore
-          .collection('Complaints')
+          .collection('Vehicle')
           .orderBy('timestamp', descending: true)
           .get();
       //String searchQuery = "";
@@ -41,9 +43,9 @@ class Database {
 
             Map a = {
               "id": doc.id,
-              "LorryNumber": doc['LorryNumber'],
-              "email": doc['email'],
-              "description": doc['description'],
+              "vehicleNumber": doc['vehicleNumber'],
+              "vehicleName": doc['vehicleName'],
+              "vehicleType": doc['vehicleType'],
               "cDate": timeago.format(timesAgo)
             };
             print(a);
@@ -60,4 +62,10 @@ class Database {
   }
 
 
-} //last  bracket
+
+
+
+
+
+
+}//last  bracket

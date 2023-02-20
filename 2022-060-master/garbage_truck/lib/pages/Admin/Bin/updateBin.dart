@@ -1,41 +1,65 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:garbage_truck/pages/Admin/Bin/viewBin.dart';
 
-import 'package:permission_handler/permission_handler.dart';
-import '../../api/garbageBinApi.dart';
-import '../../dialogs/custom_dialog_box.dart';
-import '../homePage.dart';
-import '../signIn.dart';
-import '../signUp.dart';
+import '../adminNavigationDrawer.dart';
+import '../../../api/binApi.dart';
+import '../../../dialogs/custom_dialog_box.dart';
 
-class AddGarbagePlaces extends StatefulWidget {
+
+class UpdateBin extends StatefulWidget {
   @override
-  _AddGarbagePlacesState createState() => _AddGarbagePlacesState();
+
+
+  final binId;
+  final routeName;
+  final quantity;
+
+  const UpdateBin({
+    this.binId,
+    this.routeName,
+    this.quantity,
+
+  });
+
+
+  _UpdateBinpageState createState() => _UpdateBinpageState();
 }
 
-class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
+class _UpdateBinpageState extends State<UpdateBin> {
   late Database db;
 
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _binNameTextController = TextEditingController();
+  TextEditingController _quantityTextController = TextEditingController();
+  TextEditingController _routeIdTextController = TextEditingController();
+  TextEditingController _locationTextController = TextEditingController();
 
-  TextEditingController _placeTextController = TextEditingController();
 
-  var placeFocus = FocusNode();
+  //NumberInputElement _quantityTextController = NumberInputElement();
 
-  var lorryNumberFocus = FocusNode();
-  var emailFocus = FocusNode();
-  var descriptionFocus = FocusNode();
+  var binNameFocus = FocusNode();
+  var quantityFocus = FocusNode();
+  var routeIdFocus = FocusNode();
+  var locationFocus = FocusNode();
 
   initialise() {
+
+
+
     db = Database();
     db.initiliase();
   }
 
   @override
   void initState() {
+    _quantityTextController.text=widget.quantity.toString();
+    _routeIdTextController.text=widget.routeName;
+    _locationTextController.text=widget.binId;
+
+
     super.initState();
     initialise();
   }
@@ -48,11 +72,12 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
 
     return SafeArea(
       child: Scaffold(
+        drawer: NavigationDrawerWidget(),
         appBar: AppBar(
-          // foregroundColor: Colors.black
-          backgroundColor: Colors.green.shade300,
-          shadowColor: Colors.green,
-          title: const Text('Filled Bins'),
+          foregroundColor: Colors.black,
+          backgroundColor: Colors.white,
+
+          title: const Text(' '),
           actions: const [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -63,15 +88,10 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
           height: double.infinity,
           width: double.infinity,
           alignment: Alignment.center,
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [Colors.green.shade200, Colors.green.shade900])),
+
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: 50,
-                ),
                 Container(
                   height: 150,
                   width: 230,
@@ -80,7 +100,7 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                         Colors.green.shade200,
                         Colors.green.shade900
                       ]),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                             blurRadius: 4,
                             spreadRadius: 3,
@@ -96,7 +116,7 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                           Colors.green.shade200,
                           Colors.green.shade900
                         ]),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               blurRadius: 4,
                               spreadRadius: 3,
@@ -107,9 +127,9 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                             topLeft: Radius.circular(0))),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: const [
                         Text(
-                          'Garbage Place',
+                          'Update ',
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
@@ -121,81 +141,115 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                                     blurRadius: 5)
                               ]),
                         ),
-
+                        Text(
+                          ' Bin',
+                          style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black45,
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5)
+                              ]),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 90,
+                  height: 50,
                 ),
+
                 Padding(
                   padding:
                   EdgeInsets.symmetric(horizontal: 30).copyWith(bottom: 10),
                   child: TextField(
-                    controller: _placeTextController,
-                    focusNode: placeFocus,
-                    style: TextStyle(color: Colors.white, fontSize: 14.5),
+                    controller: _quantityTextController,
+                    focusNode: quantityFocus,
+                    style: TextStyle(color: Colors.grey, fontSize: 14.5),
                     decoration: InputDecoration(
                         prefixIconConstraints: BoxConstraints(minWidth: 45),
                         prefixIcon: Icon(
-                          Icons.add_outlined,
-                          color: Colors.white70,
+                          Icons.confirmation_number_rounded,
+                          color: Colors.grey,
                           size: 22,
                         ),
                         border: InputBorder.none,
-                        hintText: 'Place',
-                        hintStyle:
-                        TextStyle(color: Colors.white60, fontSize: 14.5),
+                        hintText: 'Quantity',
+                        hintStyle: TextStyle(color: Colors.grey, fontSize: 12),
                         enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white38)),
+                            borderSide: BorderSide(color: Colors.grey)),
                         focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30).copyWith(
-                                bottomRight: Radius.circular(0),
-                                topLeft: Radius.circular(0)),
-                            borderSide: BorderSide(color: Colors.white70))),
+                            borderSide: BorderSide(color: Colors.black))),
                   ),
                 ),
-
-
                 SizedBox(
                   height: 50,
                 ),
+
                 GestureDetector(
                   onTap: () {
-                    if (_placeTextController.text.isEmpty) {
+              if (_quantityTextController.text.isEmpty) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return const CustomDialogBox(
-                              title: "Place  !",
-                              descriptions:
-                              "Hii Please Enter the Place ",
+                              title: "RouteID",
+                              descriptions: "Hii Please Enter the RouteID ",
                               text: "OK",
                             );
                           })
                           .whenComplete(() => FocusScope.of(context)
-                          .requestFocus(lorryNumberFocus));
-                    }  else {
-                      db.createGarbageBin(
-                          _placeTextController.text );
+                          .requestFocus(quantityFocus));
+                    } else if (_routeIdTextController.text.isEmpty) {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
-                            return const CustomDialogBox (
-                              title: ("Place  Added !"),
-                              descriptions: "Place  added successfully!",
+                            return const CustomDialogBox(
+                              title: "vehicle type !",
+                              descriptions:
+                              "Hii Please Enter the vehicle type ",
+                              text: "OK",
+                            );
+                          })
+                          .whenComplete(() => FocusScope.of(context)
+                          .requestFocus(routeIdFocus));
+                    } else if (_locationTextController.text.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const CustomDialogBox(
+                              title: "Location !",
+                              descriptions:
+                              "Hii Please Enter the Location ",
+                              text: "OK",
+                            );
+                          })
+                          .whenComplete(() => FocusScope.of(context)
+                          .requestFocus(locationFocus));
+                    } else {
+                      db.updateBin(
+                        widget.binId,
+                        _quantityTextController.text,
+                        _routeIdTextController.text,
+
+
+                      );
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const CustomDialogBox(
+                              title: ("Bin !"),
+                              descriptions: "Bin updated Successfully!",
                               text: "ok",
                             );
-                          }).whenComplete(() => Navigator.push(
+                          })
+                          .whenComplete(() => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => MyHomePage(
-                                title: 'Flower',
-                              ))));
+                              builder: (context) => const ViewBin())));
                     }
                   },
                   child: Container(
@@ -210,14 +264,15 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                               color: Colors.black12.withOpacity(.2),
                               offset: Offset(2, 2))
                         ],
-                        borderRadius: BorderRadius.circular(30).copyWith(
+                        borderRadius:
+                        BorderRadius.circular(0).copyWith(
                             bottomRight: Radius.circular(0),
                             topLeft: Radius.circular(0)),
                         gradient: LinearGradient(colors: [
                           Colors.green.shade200,
                           Colors.green.shade900
                         ])),
-                    child: Text(' Add Place',
+                    child: Text('Save',
                         style: TextStyle(
                             color: Colors.white.withOpacity(.8),
                             fontSize: 15,
@@ -230,7 +285,9 @@ class _AddGarbagePlacesState extends State<AddGarbagePlaces> {
                 SizedBox(
                   height: 20,
                 ),
-
+                SizedBox(
+                  height: 20,
+                )
               ],
             ),
           ),

@@ -14,19 +14,14 @@ import 'package:location/location.dart';
 import 'package:flutter/services.dart';
 import '../../api/routeApi.dart';
 import '../../dialogs/custom_dialog_box.dart';
-import '../Admin/Routes/ViewRoutesByBin.dart';
 
-class CalculateRouteMap extends StatefulWidget {
+class UserMap extends StatefulWidget {
   @override
-  final id;
-
-
 
   final destinationLat;
   final destinationLng;
 
-  CalculateRouteMap({
-    this.id,
+  UserMap({
 
     this.destinationLat,
     this.destinationLng,
@@ -34,10 +29,10 @@ class CalculateRouteMap extends StatefulWidget {
   });
 
   @override
-  _CalculateRouteMapState createState() => _CalculateRouteMapState();
+  _UserMapState createState() => _UserMapState();
 }
 
-class _CalculateRouteMapState extends State<CalculateRouteMap> {
+class _UserMapState extends State<UserMap> {
   late Database db;
   List docs = [];
 
@@ -50,12 +45,8 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
 
   final Completer<GoogleMapController> _controller = Completer();
 
-
-
-
   static LatLng sourceLocation = LatLng(6.9076384, 79.8949571);
   static LatLng destination = LatLng(0, 0);
-
   static LatLng borella = LatLng(6.9177852, 79.89129199999999);
 
   static LatLng prudentialShipping = LatLng(6.9107964, 79.8904033);
@@ -222,54 +213,7 @@ class _CalculateRouteMapState extends State<CalculateRouteMap> {
           },
         ),
         Container(
-          child: GestureDetector(
-            onTap: () {
-              // db.UpdateRouteAssign( widget.id,"pickedUpByDriver");
 
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const CustomDialogBox(
-                      title: ("Route !"),
-                      descriptions: "Route Asign to the driver",
-                      text: "ok",
-                    );
-                  }).whenComplete(() => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AdminViewRoute(
-
-                      ))));
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 750.0),
-              child: Container(
-                height: 53,
-                width: double.infinity,
-                margin: EdgeInsets.symmetric(horizontal: 30),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: 4,
-                          color: Colors.black12.withOpacity(.2),
-                          offset: Offset(2, 2))
-                    ],
-                    borderRadius: BorderRadius.circular(0).copyWith(
-                        bottomRight: Radius.circular(0),
-                        topLeft: Radius.circular(0)),
-                    gradient: LinearGradient(colors: [
-                      Colors.green.shade200,
-                      Colors.green.shade900
-                    ])),
-                child: Text('Assign Driver ',
-                    style: TextStyle(
-                        color: Colors.white.withOpacity(.8),
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ),
         )
       ]),
     );

@@ -1,41 +1,35 @@
-class UserModel{
-
+class UserModel {
   String? uid;
   String? email;
-  // String? firstName;
+  String? password;
   String? phoneNumber;
-  String? muncipleArea;
+  String? routeName;
 
   UserModel({
-    this.uid, this.email, this.phoneNumber,this.muncipleArea,
+    this.uid,
+    this.email,
+    this.password,
+    this.phoneNumber,
+    this.routeName,
   });
 
-
-  factory UserModel.fromMap(map)
-  {
+  factory UserModel.fromMap(map) {
     return UserModel(
       uid: map['uid'],
       email: map['email'],
       // firstName: map['firstName'],
       phoneNumber: map['phoneNumber'],
-      muncipleArea: map['muncipleArea'],
+      routeName: map['routeName'],
     );
-
   }
 
-
- Map<String,dynamic> toMap()
-  {
+  Map<String, dynamic> toMap() {
     return {
       'uid': uid,
       'email': email,
-      // 'firstName': firstName,
+      'password': password,
       'phoneNumber': phoneNumber,
-      'muncipleArea': muncipleArea,
+      'routeName': routeName,
     };
-
   }
-
-
-
 }
